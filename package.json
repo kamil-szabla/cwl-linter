@@ -1,0 +1,43 @@
+{
+  "name": "cwl-linter",
+  "displayName": "CWL Linter",
+  "description": "A linter for Common Workflow Language (CWL) files",
+  "version": "0.0.2",
+  "publisher": "cwl-linter",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/username/cwl-linter"
+  },
+  "engines": {
+    "vscode": "^1.60.0"
+  },
+  "categories": [
+    "Linters"
+  ],
+  "activationEvents": [
+    "onLanguage:cwl",
+    "onLanguage:yaml"
+  ],
+  "main": "./extension.js",
+  "contributes": {
+    "languages": [{
+      "id": "cwl",
+      "aliases": ["Common Workflow Language", "cwl"],
+      "extensions": [".cwl"],
+      "configuration": "./language-configuration.json"
+    }]
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "test": "node ./test/runTest.js"
+  },
+  "dependencies": {
+    "js-yaml": "^4.1.0"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.60.0",
+    "@types/node": "^16.11.7",
+    "eslint": "^8.0.0",
+    "typescript": "^4.5.5"
+  }
+}
