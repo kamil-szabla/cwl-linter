@@ -6,9 +6,11 @@ A Visual Studio Code extension that provides linting capabilities for Common Wor
 
 - Real-time linting of CWL files
 - Validates CWL syntax and structure
-- Checks for required fields (cwlVersion, class)
-- Validates class values against allowed types
+- Checks for required fields (`cwlVersion`, `class`)
+- Validates class values (`Workflow`, `CommandLineTool`, `ExpressionTool`)
 - Verifies input definitions
+- Checks field order and spacing
+- Ensures `Workflow` inputs have `label` and `doc`
 - YAML syntax validation
 
 ## Current Rules
@@ -16,15 +18,18 @@ A Visual Studio Code extension that provides linting capabilities for Common Wor
 The linter checks for:
 
 1. Presence of required `cwlVersion` field
-2. Presence and validity of `class` field (must be one of: Workflow, CommandLineTool, ExpressionTool)
+2. Presence and validity of `class` field (must be one of: `Workflow`, `CommandLineTool`, `ExpressionTool`)
 3. Proper structure of `inputs` section
 4. Valid YAML syntax
+5. Correct order of top-level fields according to CWL class
+6. Required blank lines before selected fields
+7. `Workflow` inputs must include `label` and `doc`
 
 ## Installation
 
 1. Clone this repository
 2. Run `npm install` in the project directory
-3. Build the extension (you can use VSCode's "Run Extension" command from the debug menu)
+3. Launch the extension using VS Code's "Run Extension" from the debug menu
 
 ### Manual Installation
 To install the extension manually:
@@ -56,6 +61,7 @@ cwlVersion: v1.0
 class: CommandLineTool
 
 baseCommand: echo
+
 inputs:
   message:
     type: string
@@ -85,7 +91,7 @@ MIT
 
 To modify or enhance the linter:
 
-1. The main linting logic is in `extension.js`
-2. Rules are defined in the `rules` object
-3. Add new rules by extending the `rules` object with new validation functions
-4. Test your changes with the example CWL files in the `test` directory
+1. The main logic lives in `extension.js`
+2. You can add rules directly within `extension.js` by modifying the validation logic
+3. Use `F5` in VS Code to launch a development version of the extension
+4. Test your changes using CWL examples
