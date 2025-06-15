@@ -6,3 +6,5 @@ node_modules/
 coverage/
 .nyc_output/
 *.log
+/test/TEST-cwl-pass/
+/test/TEST-cwl-fail/
