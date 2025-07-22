@@ -17,30 +17,33 @@ A Visual Studio Code extension that provides linting capabilities for Common Wor
 
 The linter checks for:
 
-1. Presence of required `cwlVersion` field
-2. Presence and validity of `class` field (must be one of: `Workflow`, `CommandLineTool`, `ExpressionTool`)
-3. Proper structure of `inputs` section
-4. Valid YAML syntax
-5. Correct order of top-level fields according to CWL class
-6. Required blank lines before selected fields
-7. `Workflow` inputs must include `label` and `doc`
+1. **cwlVersion Field**: Verifies the presence of the `cwlVersion` field
+2. **Class Field**: Checks for the presence and validity of the `class` field (must be one of: `Workflow`, `CommandLineTool`, `ExpressionTool`)
+3. **Inputs Structure**: Validates that the `inputs` section is properly structured as an object or array
+4. **YAML Syntax**: Ensures the file contains valid YAML syntax
+5. **Field Order**: Validates the correct order of top-level fields according to CWL class:
+   - **CommandLineTool**: `cwlVersion`, `class`, `label`, `doc`, `$namespaces`, `requirements`, `hints`, `inputs`, `outputs`, `baseCommand`, `arguments`, `stdout`, `stderr`
+   - **ExpressionTool**: `cwlVersion`, `class`, `doc`, `$namespaces`, `requirements`, `hints`, `inputs`, `outputs`, `expression`
+   - **Workflow**: `cwlVersion`, `class`, `label`, `doc`, `$namespaces`, `requirements`, `hints`, `inputs`, `outputs`, `steps`
+6. **Blank Lines**: Ensures required blank lines before specific fields: `$namespaces`, `requirements`, `hints`, `inputs`, `outputs`, `baseCommand`, `arguments`, `expression`, `steps`
+7. **Workflow Input Metadata**: Verifies that all `Workflow` inputs include both `label` and `doc` fields
 
 ## Installation
 
+### Manual Installation
+1. Download the latest `.vsix` file from the [releases page](https://github.com/kamil-szabla/cwl-linter/releases)
+2. In VS Code, go to Extensions (Ctrl+Shift+X)
+3. Click the "..." menu and select "Install from VSIX..."
+4. Select the downloaded file
+
+### Development Installation
 1. Clone this repository
 2. Run `npm install` in the project directory
-3. Launch the extension using VS Code's "Run Extension" from the debug menu
-
-### Manual Installation
-To install the extension manually:
-
-1. Copy the files to your VSCode extensions directory:
-   - Windows: `%USERPROFILE%\.vscode\extensions`
-   - macOS/Linux: `~/.vscode/extensions`
-2. Restart Visual Studio Code
+3. Launch the extension using VS Code's "Run Extension" from the debug menu (F5)
 
 ## Usage
 
+### VS Code Extension
 The extension automatically activates for files with the `.cwl` extension. Linting occurs:
 - When you open a CWL file
 - When you make changes to a CWL file
@@ -50,48 +53,18 @@ Errors and warnings will be displayed:
 - As squiggly underlines in the editor
 - In the Problems panel (View → Problems)
 
-## Example
+### Command Line Interface
+This extension also provides a CLI tool for linting CWL files outside of VS Code:
 
-Here's a valid CWL file that passes all lint checks:
+```bash
+# Install globally
+npm install -g cwl-linter
 
-```yaml
-#!/usr/bin/env cwl-runner
+# Check a single file
+cwl-linter --check-file path/to/file.cwl
 
-cwlVersion: v1.0
-class: CommandLineTool
+# Check all CWL files in the current directory and subdirectories
+cwl-linter --check-all
 
-baseCommand: echo
-
-inputs:
-  message:
-    type: string
-    inputBinding:
-      position: 1
-
-outputs:
-  output_file:
-    type: stdout
-
-stdout: output.txt
-```
-
-## Contributing
-
-Contributions are welcome! Feel free to:
-- Report bugs
-- Suggest new features
-- Add new lint rules
-- Improve documentation
-
-## License
-
-MIT
-
-## Development
-
-To modify or enhance the linter:
-
-1. The main logic lives in `extension.js`
-2. You can add rules directly within `extension.js` by modifying the validation logic
-3. Use `F5` in VS Code to launch a development version of the extension
-4. Test your changes using CWL examples
+# Ignore specific files
+cwl-linter --check-all --ignore file1.cwl,file2.cwl

@@ -2,14 +2,14 @@
   "name": "cwl-linter",
   "displayName": "CWL Linter",
   "description": "A linter for Common Workflow Language (CWL) files",
-  "version": "0.0.4",
+  "version": "1.0.0",
   "bin": {
     "cwl-linter": "./bin/cwl-linter.js"
   },
   "publisher": "cwl-linter",
   "repository": {
     "type": "git",
-    "url": "https://github.com/username/cwl-linter"
+    "url": "https://github.com/kamil-szabla/cwl-linter"
   },
   "engines": {
     "vscode": "^1.60.0"
@@ -18,8 +18,7 @@
     "Linters"
   ],
   "activationEvents": [
-    "onLanguage:cwl",
-    "onLanguage:yaml"
+    "onLanguage:cwl"
   ],
   "main": "./extension.js",
   "contributes": {
@@ -41,7 +40,7 @@
   "scripts": {
     "lint": "eslint .",
     "test": "node ./test/runTest.js",
-    "postinstall": "node -e \"try { require('child_process').execSync('npm link', { stdio: 'inherit' }); } catch(e) { console.error('Failed to install CLI:', e); }\""
+    "postinstall": "node ./scripts/cli-setup.js"
   },
   "dependencies": {
     "commander": "^14.0.0",
@@ -51,6 +50,7 @@
   "files": [
     "bin",
     "lib",
+    "scripts",
     "extension.js",
     "language-configuration.json"
   ],
